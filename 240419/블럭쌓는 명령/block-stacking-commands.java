@@ -17,7 +17,7 @@ public class Main {
             int start = Integer.parseInt(st.nextToken());
             int end = Integer.parseInt(st.nextToken());
             for(int j = start; j <= end; j++){
-                arr[j]++;
+                arr[j-1]++;
             }
         }
 
