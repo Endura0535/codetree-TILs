@@ -24,6 +24,7 @@ public class Main {
         for(int i = 0; i < list.size(); i++){
             Point p = list.get(i);
             answer = i;
+            cost += p.x + p.y;
             if(cost >= B){
                 if(!useCoupon)
                     if(cost - (p.x / 2) < B)
