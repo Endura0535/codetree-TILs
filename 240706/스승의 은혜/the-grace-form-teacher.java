@@ -16,7 +16,7 @@ public class Main {
             int s = Integer.parseInt(st.nextToken());
             list.add(new Point(p, s));
         }
-        Collections.sort(list, (o1, o2) -> o1.x + o1.y == o2.x + o2.y ? (o1.x + o1.y) - (o2.x + o2.y) : o1.x - o2.x);
+        Collections.sort(list, (o1, o2) -> o1.x + o1.y == o2.x + o2.y ? o1.x - o2.x : (o1.x + o1.y) - (o2.x + o2.y));
 
         int cost = 0;
         boolean useCoupon = false;
