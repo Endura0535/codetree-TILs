@@ -18,20 +18,25 @@ public class Main {
 
         for(int i = 0; i < list.size(); i++){
             visited = new boolean[N];
-            answer = Math.max(answer, boom(list.get(i), i, 1));
+            int cnt = 0;
+            boom(list.get(i), i, 1);
+            for(int j = 0; j < N; j++){
+                if(visited[j]){
+                    cnt++;
+                }
+            }
+            answer = Math.max(answer, cnt);
         }
         System.out.println(answer);
     }
 
-    static int boom(int x, int idx, int range){
+    static void boom(int x, int idx, int range){
         visited[idx] = true;
 
-        int answer = 0;
         for(int i = idx - 1; i >= 0 ; i--){
             if(list.get(i) >= x - range && !visited[i]){
                 visited[i] = true;
-                answer++;
-                answer += boom(list.get(i), i, range + 1);
+                boom(list.get(i), i, range + 1);
             }
             else
                 break;
@@ -39,13 +44,10 @@ public class Main {
         for(int i = idx + 1; i < list.size() ; i++){
             if(list.get(i) <= x + range && !visited[i]){
                 visited[i] = true;
-                answer++;
-                answer += boom(list.get(i), i, range + 1);
+                boom(list.get(i), i, range + 1);
             }
             else
                 break;
         }
-
-        return answer;
     }
 }
