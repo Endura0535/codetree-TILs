@@ -1,55 +1,50 @@
-import java.awt.*;
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Main {
-
-    public static int maxIcebergChunks(int[] H) {
-        int N = H.length;
-        int maxChunks = 1;
-
-        Set<Integer> uniqueHeights = new HashSet<>();
-        for (int h : H) {
-            uniqueHeights.add(h);
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
+        List<Point> list = new ArrayList<>();
+        int maxH = 0;
+        for (int i = 0; i < N; i++) {
+            int n = Integer.parseInt(br.readLine());
+            maxH = Math.max(n, maxH);
+            list.add(new Point(i, n));
         }
+        Collections.sort(list, (o1, o2) -> o1.y == o2.y ? o1.x - o2.x : o2.y - o1.y);
 
-        List<Integer> sortedHeights = new ArrayList<>(uniqueHeights);
-        Collections.sort(sortedHeights);
+        int height = list.get(0).y - 1;
+        int answer = 0;
+        boolean[] checked = new boolean[N];
+        int icebergCnt = 0;
 
-        for (int height : sortedHeights) {
-            int chunks = 0;
-            boolean inChunk = false;
-
-            for (int i = 0; i < N; i++) {
-                if (H[i] > height) {
-                    if (!inChunk) {
-                        chunks++;
-                        inChunk = true;
-                    }
-                } else {
-                    inChunk = false;
-                }
+        for (Point p : list) {
+            if (height != p.y - 1) {
+                answer = Math.max(answer, icebergCnt);
+                height = p.y - 1;
             }
 
-            maxChunks = Math.max(maxChunks, chunks);
+            if (p.x == 0) {
+                if (!checked[p.x + 1])
+                    icebergCnt++;
+            } else if (p.x == N - 1) {
+                if (!checked[p.x - 1])
+                    icebergCnt++;
+            } else {
+                if (checked[p.x - 1] && checked[p.x + 1])
+                    icebergCnt--;
+                else if (!checked[p.x - 1] && !checked[p.x + 1])
+                    icebergCnt++;
+            }
+            checked[p.x] = true;
         }
 
-        return maxChunks;
-    }
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-        int[] H = new int[N];
-
-        for (int i = 0; i < N; i++) {
-            H[i] = sc.nextInt();
-        }
-
-        System.out.println(maxIcebergChunks(H));
-        sc.close();
+        System.out.println(answer);
     }
 }
