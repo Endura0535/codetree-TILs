@@ -48,11 +48,11 @@ public class Main {
     }
 
     private static boolean isValidMove(int x1, int y1, int x2, int y2, int direction) {
-        // x축 평행 이동 (세로 이동)
+        // x축 평행 이동
         if (x1 == x2) {
             return (direction != 1 && y2 > y1) || (direction != 3 && y2 < y1);
         }
-        // y축 평행 이동 (가로 이동)
+        // y축 평행 이동
         if (y1 == y2) {
             return (direction != 2 && x2 > x1) || (direction != 4 && x2 < x1);
         }
