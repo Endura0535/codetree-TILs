@@ -22,11 +22,11 @@ public class Main {
             }
         }
 
-        int sum = 0;
+        long sum = 0;
         for (int[] arr : dp) {
             sum += arr[n];
         }
-        
-        System.out.println(sum);
+
+        System.out.println(sum % 1000000007);
     }
 }
