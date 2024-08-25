@@ -10,63 +10,44 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
-        List<Character> alphabetList = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-                'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
-        List<Integer>[] words = new List[N];
+
+        String[] originalWords = new String[N];
+        String[] fastestWords = new String[N];
+        String[] slowestWords = new String[N];
+
         for (int i = 0; i < N; i++) {
-            String word = br.readLine();
-            words[i] = new ArrayList<>();
-            for (int j = 0; j < word.length(); j++) {
-                words[i].add(alphabetList.indexOf(word.charAt(j)));
-            }
+            originalWords[i] = br.readLine();
+
+            char[] chars = originalWords[i].toCharArray();
+            Arrays.sort(chars);
+            fastestWords[i] = new String(chars);
+            slowestWords[i] = new StringBuilder(new String(chars)).reverse().toString();
         }
 
-        List<String> fastWords = new ArrayList<>();
-        List<String> slowWords = new ArrayList<>();
-        String[] fastArr = new String[N];
-        String[] slowArr = new String[N];
+        List<String> sortedFastestWords = new ArrayList<>(Arrays.asList(fastestWords));
+        Collections.sort(sortedFastestWords, Collections.reverseOrder());
 
-
-        for (int i = 0; i < N; i++) {
-            StringBuilder fast = new StringBuilder();
-            StringBuilder slow = new StringBuilder();
-
-            Collections.sort(words[i]);
-            for (int j = 0; j < words[i].size(); j++) {
-                fast.append(alphabetList.get(words[i].get(j)));
-            }
-
-            Collections.sort(words[i], Collections.reverseOrder());
-            for (int j = 0; j < words[i].size(); j++) {
-                slow.append(alphabetList.get(words[i].get(j)));
-            }
-
-            fastWords.add(fast.toString());
-            slowWords.add(slow.toString());
-            fastArr[i] = fast.toString();
-            slowArr[i] = slow.toString();
-        }
+        List<String> sortedSlowestWords = new ArrayList<>(Arrays.asList(slowestWords));
+        Collections.sort(sortedSlowestWords);
 
         for (int i = 0; i < N; i++) {
-            String fastWord = fastArr[i];
-            String slowWord = slowArr[i];
-            fastWords.add(slowWord);
-            fastWords.remove(fastWord);
-            slowWords.add(fastWord);
-            slowWords.remove(slowWord);
+            String fastWord = fastestWords[i];
+            String slowWord = slowestWords[i];
 
-            Collections.sort(fastWords, Collections.reverseOrder());
-            Collections.sort(slowWords);
+            int slowRank = Collections.binarySearch(sortedFastestWords, slowWord, Collections.reverseOrder());
 
-            int fastestIdx = slowWords.indexOf(fastWord) + 1;
-            int slowestIdx = N - fastWords.indexOf(slowWord);
+            if (slowRank >= 0) {
+                while (slowRank > 0 && sortedFastestWords.get(slowRank - 1).equals(slowWord)) {
+                    slowRank--;
+                }
+            } else {
+                slowRank = -slowRank - 1;
+            }
 
-            System.out.println(fastestIdx + " " + slowestIdx);
+            int fastRank = Collections.binarySearch(sortedSlowestWords, fastWord);
+            if (fastRank < 0) fastRank = -fastRank - 1;
 
-            fastWords.remove(slowWord);
-            fastWords.add(fastWord);
-            slowWords.remove(fastWord);
-            slowWords.add(slowWord);
+            System.out.println(fastRank + 1 + " " + (N - slowRank));
         }
     }
 }
