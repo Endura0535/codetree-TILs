@@ -5,7 +5,7 @@ public class Main {
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
-        TreeMap<String, Integer> map = new TreeMap<>();
+        Map<String, Integer> map = new HashMap<>();
     
         for(int i = 0; i < n; i++){
             StringTokenizer st = new StringTokenizer(br.readLine());
@@ -27,10 +27,9 @@ public class Main {
                 map.put(totalWord, 1);
         }
 
-        System.out.println(map.firstEntry().getValue());
+        List<Integer> list = new ArrayList<>(map.values());
+        Collections.sort(list, Collections.reverseOrder());
 
-
-
-
+        System.out.println(list.get(0));
     }
 }
