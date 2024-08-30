@@ -32,34 +32,35 @@ public class Main {
         int n = sc.nextInt();
         int[] arr = new int[n + 1];
         init(n);
+
         for (int i = 1; i <= n; i++) {
             int x = sc.nextInt();
             arr[i] = x;
-            if (x == 0)
-                continue;
-            union(i, x);
+            if (x != 0) {
+                union(i, x);
+            }
         }
 
-        Set<Integer> set = new HashSet<>();
         for (int i = 1; i <= n; i++) {
-            set.add(parents[i]);
+            find(i);
         }
 
         Map<Integer, Integer> groupCntMap = new HashMap<>();
         for (int i = 1; i <= n; i++) {
-            groupCntMap.computeIfAbsent(parents[i], k -> 0);
-            groupCntMap.computeIfPresent(parents[i], (k, v) -> v + 1);
+            int root = parents[i];
+            groupCntMap.put(root, groupCntMap.getOrDefault(root, 0) + 1);
         }
-        
+
         int answer = 0;
-        for (int i : groupCntMap.keySet()) {
+        for (int root : groupCntMap.keySet()) {
             int edge = 0;
             for (int j = 1; j <= n; j++) {
-                if (parents[arr[j]] == i)
+                if (arr[j] != 0 && find(arr[j]) == root) {
                     edge++;
+                }
             }
-            if (edge < groupCntMap.get(i)) {
-                answer += groupCntMap.get(i);
+            if (edge < groupCntMap.get(root)) {
+                answer += groupCntMap.get(root);
             }
         }
 
