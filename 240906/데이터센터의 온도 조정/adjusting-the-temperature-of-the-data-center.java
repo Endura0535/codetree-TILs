@@ -17,18 +17,24 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             int s = Integer.parseInt(st.nextToken());
             int e = Integer.parseInt(st.nextToken());
+            if (s != 0) {
+                if (map.containsKey(0))
+                    map.put(0, map.get(0) + C);
+                else map.put(0, C);
+            }
+            if (s == 0) {
+                if (map.containsKey(s))
+                    map.put(s, map.get(s) + G);
+                else map.put(s, G);
+            } else {
+                if (map.containsKey(s))
+                    map.put(s, map.get(s) + G - C);
+                else map.put(s, G - C);
+            }
 
-            if (map.containsKey(1))
-                map.put(1, map.get(1) + C);
-            else map.put(1, C);
-
-            if (map.containsKey(s))
-                map.put(s, map.get(s) + G - C);
-            else map.put(s, G - C);
-
-            if (map.containsKey(e))
-                map.put(e, map.get(e) + H - G);
-            else map.put(e, H - G);
+            if (map.containsKey(e + 1))
+                map.put(e + 1, map.get(e + 1) + H - G);
+            else map.put(e + 1, H - G);
         }
 
         List<Integer> list = new ArrayList<>(map.keySet());
