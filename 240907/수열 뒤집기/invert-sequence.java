@@ -10,7 +10,7 @@ public class Main {
 
         int N = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
-        K = K % 2 == 1 ? 1 : 2;
+        K %= 4;
 
         int[] arr = new int[N];
         for (int i = 0; i < N; i++) {
