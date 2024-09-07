@@ -24,8 +24,8 @@ public class Main {
         int b2 = Integer.parseInt(st.nextToken());
 
         for (int i = 0; i < K; i++) {
-            arr = swap(arr, a1, a2);
-            arr = swap(arr, b1, b2);
+            arr = swap(arr, a1 - 1, a2 - 1);
+            arr = swap(arr, b1 - 1, b2 - 1);
         }
 
         for (int i = 0; i < N; i++) {
@@ -34,12 +34,12 @@ public class Main {
     }
 
     static public int[] swap(int[] arr, int a, int b) {
-        Queue<Integer> queue = new LinkedList<>();
-        for (int j = b - 1; j >= a - 1; j--) {
-            queue.add(arr[j]);
-        }
-        for (int j = a - 1; j <= b - 1; j++) {
-            arr[j] = queue.poll();
+        while (a < b) {
+            int temp = arr[a];
+            arr[a] = arr[b];
+            arr[b] = temp;
+            a++;
+            b--;
         }
         return arr;
     }
