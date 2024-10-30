@@ -18,10 +18,6 @@ public class Main{
             String str = br.readLine();
             for (int j = 0; j < M; j++) {
                 map[i + 1][j + 1] = str.charAt(j) == '/' ? 1 : 0;
-                if (str.charAt(j) == '/')
-                    map[i + 1][j + 1] = 1;
-                else
-                    map[i + 1][j + 1] = 0;
             }
         }
 
