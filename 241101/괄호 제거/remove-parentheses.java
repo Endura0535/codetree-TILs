@@ -3,69 +3,62 @@ import java.io.*;
 
 public class Main {
 
-    static List<List<Integer>> indexList = new ArrayList<>();
     static List<Integer> startList = new ArrayList<>();
     static List<Integer> endList = new ArrayList<>();
     static int bracketCnt; 
+    static Set<String> answerSet = new LinkedHashSet<>();
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String str = br.readLine();
 
-        Deque<Integer> list1 = new ArrayDeque<>();
-        Deque<Integer> list2 = new ArrayDeque<>();
+        Stack<Integer> stack = new Stack<>();
 
-        for(int i = 0; i < str.length(); i++){
-            if(str.charAt(i) == '(')
-                list1.addLast(i);
-            if(str.charAt(i) == ')')
-                list2.addFirst(i);
-        }
-
-        startList.addAll(list1);
-        endList.addAll(list2);
-        bracketCnt = list1.size();
-
-        DFS(0, new ArrayList<>());
-
-        List<String> answerList = new ArrayList<>();
-
-        for(List<Integer> list : indexList){
-            if(list.isEmpty())    continue;
-            Collections.sort(list);
-            int idx = 0;
-            String string = "";
-            for(int i = 0; i < str.length(); i++){
-                if(idx == list.size()){
-                    string += str.charAt(i);
-                    continue;
-                }
-                if(list.get(idx) != i)
-                    string += str.charAt(i);
-                else
-                    idx++;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == '(') {
+                stack.push(i);
+            } else if (str.charAt(i) == ')') {
+                int start = stack.pop();
+                startList.add(start);
+                endList.add(i);
             }
-            answerList.add(string);
         }
+
+        bracketCnt = startList.size();
+        DFS(0, str, new boolean[bracketCnt]);
+
+        List<String> answerList = new ArrayList<>(answerSet);
         Collections.sort(answerList);
-        for(String string : answerList){
+        for (String string : answerList) {
             System.out.println(string);
         }
     }
 
-    public static void DFS(int idx, List<Integer> list){
-        if(idx == bracketCnt){
-            indexList.add(list);
+    public static void DFS(int idx, String str, boolean[] remove) {
+        if (idx == bracketCnt) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < str.length(); i++) {
+                boolean skip = false;
+                for (int j = 0; j < bracketCnt; j++) {
+                    if ((i == startList.get(j) || i == endList.get(j)) && remove[j]) {
+                        skip = true;
+                        break;
+                    }
+                }
+                if (!skip) 
+                    sb.append(str.charAt(i));
+            }
+
+            if (sb.length() < str.length()) {
+                answerSet.add(sb.toString());
+            }
             return;
         }
 
-        DFS(idx+1, list);
-        List<Integer> newList = new ArrayList<>();
-        for(int i : list){
-            newList.add(i);
-        }
-        newList.add(startList.get(idx));
-        newList.add(endList.get(idx));
-        DFS(idx+1, newList);
+        remove[idx] = false;
+        DFS(idx + 1, str, remove);
+
+        remove[idx] = true;
+        DFS(idx + 1, str, remove);
     }
 }
