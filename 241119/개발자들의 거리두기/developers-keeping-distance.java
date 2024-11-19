@@ -40,8 +40,8 @@ public class Main {
                 continue;
             if (lastInfected + infectDistance < p.x) {
                 answer++;
-                lastInfected = p.x;
             }
+            lastInfected = p.x;
         }
 
         System.out.println(answer);
