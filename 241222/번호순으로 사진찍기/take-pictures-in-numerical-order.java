@@ -14,27 +14,27 @@ public class Main {
         int N = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
         List<Point> list = new ArrayList<>();
+
         for (int i = 0; i < K; i++) {
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
             list.add(new Point(Math.min(a, b), Math.max(a, b)));
         }
+
         Collections.sort(list, (o1, o2) -> {
             if (o1.y == o2.y)
-                return o1.x - o2.x;
-            return o1.y - o2.y;
+                return Integer.compare(o1.x, o2.x);
+            return Integer.compare(o1.y, o2.y);
         });
 
         int answer = 1;
-        int idx = 0;
+        int lastEnd = 0;
         for (Point now : list) {
-            if (now.x <= idx) {
-                idx = now.y - 1;
-                continue;
+            if (now.x >= lastEnd) {
+                answer++;
+                lastEnd = now.y;
             }
-            idx = now.y - 1;
-            answer++;
         }
 
         System.out.println(answer);
