@@ -9,27 +9,23 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
         Stack<Integer> stack = new Stack<>();
-        int answer = 0;
+        int answer = -1;
+
         for (int i = 0; i < n; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int x = Integer.parseInt(st.nextToken());
+            int x = Integer.parseInt(st.nextToken()); // x는 사용되지 않음
             int y = Integer.parseInt(st.nextToken());
-            if (stack.isEmpty()) {
-                stack.push(y);
-                answer++;
-                continue;
-            }
 
             while (!stack.isEmpty() && stack.peek() > y) {
                 stack.pop();
-                answer++;
             }
 
-            if (!stack.isEmpty()) {
-                if (stack.peek() != y)
-                    stack.push(y);
-            } else stack.push(y);
+            if (stack.isEmpty() || stack.peek() != y) {
+                stack.push(y);
+                answer++;
+            }
         }
+
         System.out.println(answer);
     }
 }
